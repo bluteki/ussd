@@ -1,8 +1,8 @@
-# Very short description of the package
+# Bluteki USSD Laravel package build for short term USSD campaigns.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/Bluteki/ussd.svg?style=flat-square)](https://packagist.org/packages/Bluteki/ussd)
-[![Total Downloads](https://img.shields.io/packagist/dt/Bluteki/ussd.svg?style=flat-square)](https://packagist.org/packages/Bluteki/ussd)
-![GitHub Actions](https://github.com/Bluteki/ussd/actions/workflows/main.yml/badge.svg)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bluteki/ussd.svg?style=flat-square)](https://packagist.org/packages/bluteki/ussd)
+[![Total Downloads](https://img.shields.io/packagist/dt/bluteki/ussd.svg?style=flat-square)](https://packagist.org/packages/bluteki/ussd)
+![GitHub Actions](https://github.com/bluteki/ussd/actions/workflows/main.yml/badge.svg)
 
 This package is quick build package for Bluteki USSD integration to make thing simple to build short term USSD campaigns.
 
@@ -11,7 +11,7 @@ This package is quick build package for Bluteki USSD integration to make thing s
 You can install the package via composer:
 
 ```bash
-composer require Bluteki/ussd
+composer require bluteki/ussd
 ```
 
 ## Usage
