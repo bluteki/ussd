@@ -1,0 +1,54 @@
+{
+    "name": "Bluteki/ussd",
+    "description": "USSD package for Mozambique ",
+    "keywords": [
+        "Bluteki",
+        "ussd"
+    ],
+    "homepage": "https://github.com/Bluteki/ussd",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Themba Ngubeni",
+            "email": "thembangubeni04@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^10.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0",
+        "phpunit/phpunit": "^10.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bluteki\\Ussd\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bluteki\\Ussd\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bluteki\\Ussd\\UssdServiceProvider"
+            ],
+            "aliases": {
+                "Ussd": "Bluteki\\Ussd\\UssdFacade"
+            }
+        }
+    }
+}
