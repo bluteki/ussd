@@ -45,7 +45,6 @@ abstract class Handler implements HandlerInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
-        // static::$data = isset(static::$data) ? static::$data : collect();
         $this->data = collect();
     }
     

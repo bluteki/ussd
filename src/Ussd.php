@@ -21,19 +21,9 @@ class Ussd implements UssdInterface
 {
     public function execute(string $entry_menu, Request $request): Response
     {
-        $this->incrementNavigationTracker(
-            $manager = ($handler = Handler::getHandler($request))->session()->manager()
-        );
-
-        $this->addRequestDataSessionManager($manager, $handler->request());
-
-        $response = $this->callMenuMethod(
-            $this->getMenu($manager, $handler, $entry_menu), $manager
-        );
-        
-        while (!($response instanceof ResponseAction)) $response = $response->action($handler);
-
-        return $response->action($handler);
+        return $this->isCleanUpRequest($handler = Handler::getHandler($request)) ? 
+            $this->cleanUpSessionManagerResponse($handler) :
+            $this->navigation($entry_menu, $handler);
     }
 
     public static function function(Menu $menu, string $method, array $args = []): FunctionActionInterface
@@ -49,7 +39,32 @@ class Ussd implements UssdInterface
     public static function response(Response $response, string $next = null): ResponseActionInterface
     {
         return new ResponseAction($response, $next);
-    }   
+    }
+
+    protected function navigation(string $entry_menu, HandlerInterface $handler): Response
+    {
+        $this->incrementNavigationTracker($manager = ($handler)->session()->manager());
+
+        $this->addRequestDataSessionManager($manager, $handler->request());
+
+        $response = $this->callMenuMethod($this->getMenu($manager, $handler, $entry_menu), $manager);
+        
+        while (! ($response instanceof ResponseAction)) $response = $response->action($handler);
+
+        return $response->action($handler);
+    }
+
+    protected function isCleanUpRequest(HandlerInterface $handler): bool
+    {
+        return Handler::REQUEST_TYPE_CLOSE == $handler->type();
+    }
+
+    protected function cleanUpSessionManagerResponse(HandlerInterface $handler): Response
+    {
+        $handler->session()->manager()->delete();
+
+        return $handler->close("");
+    }
     
     protected function incrementNavigationTracker(SessionManager $manager): void
     {
@@ -64,7 +79,9 @@ class Ussd implements UssdInterface
     protected function getMenu(SessionManager $manager, HandlerInterface &$handler, string $entry_menu): Menu
     {
         if (! empty($last_menu = $manager->menus->last())) return new $last_menu($handler);
+
         $manager->update(['menus' => $manager->menus->add($entry_menu)]);
+
         return new $entry_menu($handler);
     }
 
