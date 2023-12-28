@@ -14,7 +14,6 @@ jobs:
     - name: Install composer dependencies
       run: |
         composer install --no-scripts
-        php artisan jwt:secret
  
     - name: RUNNING ALL UNIT TESTS
       run: vendor/bin/phpunit tests/
