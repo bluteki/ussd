@@ -47,6 +47,6 @@ class Request implements RequestInterface
 
     public function http(): HttpRequest
     {
-        return HttpRequest::create("", "POST", $this->request());
+        return HttpRequest::create("?" . http_build_query($this->request()), "POST");
     }
 }

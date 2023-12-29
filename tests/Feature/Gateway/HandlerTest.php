@@ -38,7 +38,7 @@ class HandlerTest extends TestCase
         );
 
         $this->assertInstanceOf(FlaresHandler::class, Handler::getHandler(
-            Request::create("/", "POST", $request->request(), [], [], [], "")
+            Request::create("?" . http_build_query($request->request()), "POST", [], [], [], [], "")
         ));
     }
 

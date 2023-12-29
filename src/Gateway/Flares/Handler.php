@@ -24,7 +24,7 @@ class Handler extends GatewayHandler
 
     public static function is_valid_handler(Request $request): bool
     {
-        return collect($request->request->all())->has(self::FIELDS);
+        return collect($request->query())->has(self::FIELDS);
     }
 
     public function request(): GatewayRequest
