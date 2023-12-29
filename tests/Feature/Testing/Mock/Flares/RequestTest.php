@@ -56,6 +56,6 @@ class RequestTest extends TestCase
 
     public function test_flares_http_request(): void
     {
-        $this->assertEquals($this->request->request(), $this->request->http()->request->all());
+        $this->assertEquals($this->request->request(), $this->request->http()->query());
     }
 }
