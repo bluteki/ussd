@@ -23,9 +23,19 @@ class HandlerTest extends TestCase
             "*120*180#"
         );
 
-        $this->assertInstanceOf(TruTeqHandler::class, Handler::getHandler(
-            Request::create("/", "POST", [], [], [], [], $request->xml())
-        ));
+        $this->assertInstanceOf(TruTeqHandler::class, Handler::getHandler($request->http()));
+    }
+
+    public function test_get_tru_teq_handler_query(): void
+    {
+        $request = new TruTeqRequest(
+            $this->faker->randomNumber(),
+            $this->faker->phoneNumber(),
+            1,
+            "*120*180#"
+        );
+
+        $this->assertInstanceOf(TruTeqHandler::class, Handler::getHandler($request->http_query()));
     }
 
     public function test_get_flares_handler(): void

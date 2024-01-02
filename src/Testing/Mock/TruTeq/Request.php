@@ -57,6 +57,31 @@ class Request implements RequestInterface
 
     public function http(): HttpRequest
     {
-        return HttpRequest::create("", "POST", [], [], [], [], $this->xml());
+        return HttpRequest::create(
+            '',
+            'POST',
+            [],
+            [],
+            [],
+            ['HTTP_USER_AGENT' => 'com.truteq.net.http.Connection'],
+            $this->xml()
+        );
+    }
+    
+    public function http_query(): HttpRequest
+    {
+        return HttpRequest::create(
+            "?" . http_build_query([
+                'sessionid' => $this->sessionID,
+                'msisdn' => $this->msisdn,
+                'type' => $this->type,
+                'msg' => $this->msg
+            ]),
+            'GET',
+            [],
+            [],
+            [],
+            ['HTTP_USER_AGENT' => 'com.truteq.net.http.Connection'],
+        );
     }
 }

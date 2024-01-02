@@ -7,7 +7,7 @@
 
 return [
     "handlers" => [
+        Bluteki\Ussd\Gateway\TruTeq\Handler::class,
         Bluteki\Ussd\Gateway\Flares\Handler::class,
-        Bluteki\Ussd\Gateway\TruTeq\Handler::class
     ]
 ];

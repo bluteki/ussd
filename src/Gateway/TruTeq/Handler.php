@@ -23,7 +23,7 @@ class Handler extends GatewayHandler
     public const USSD_RESPONSE_CLOSE_SESSION     = 3;
     public const USSD_RESPONSE_REDIRECT          = 5;
     
-    private const FIELDS = ['msisdn', 'sessionid', 'type', 'msg'];
+    private const HTTP_USER_AGENT = 'com.truteq.net.http.Connection';
 
     /**
      * @var TruTeqRequest ussd_request
@@ -32,8 +32,7 @@ class Handler extends GatewayHandler
 
     public static function is_valid_handler(Request $request): bool
     {
-        try { return collect((array)(new SimpleXMLElement($request->getContent())))->has(self::FIELDS); }
-        catch (Exception $e) { return false; }
+        return $request->server->get('HTTP_USER_AGENT') == static::HTTP_USER_AGENT;
     }
 
     public function request(): GatewayRequest

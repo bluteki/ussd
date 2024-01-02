@@ -15,6 +15,8 @@ class Request extends GatewayRequest
      */
     private Collection $request;
 
+    private const FIELDS = ['msisdn', 'sessionid', 'type', 'msg'];
+
     /**
      * 
      * 
@@ -22,7 +24,9 @@ class Request extends GatewayRequest
      */
     public function __construct(HttpRequest $request)
     {
-        $this->request = collect((array)(new SimpleXMLElement($request->getContent())));
+        $this->request = ($query = collect($request->all()))->has(static::FIELDS) ?
+            collect($query) :
+            collect((array)(new SimpleXMLElement($request->getContent())));
     }
     
     public function msisdn(): string
