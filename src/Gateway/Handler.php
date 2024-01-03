@@ -23,16 +23,22 @@ abstract class Handler implements HandlerInterface
     public const RESPONSE_TYPE_CLOSE        = 203;
 
     /**
+     * Http request.
+     * 
      * @var Request request
      */
     protected Request $request;
 
     /**
+     * Session manager gateway.
+     * 
      * @var SessionManagerInterface manager
      */
     private SessionManagerInterface $manager;
 
     /**
+     * Data to shared between menus.
+     * 
      * @var Collection data
      */
     private Collection $data;

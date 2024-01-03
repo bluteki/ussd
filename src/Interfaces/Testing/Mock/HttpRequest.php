@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 interface HttpRequest
 {
     /**
-     * 
+     * Http request mock.
      * 
      * @return Request
      */

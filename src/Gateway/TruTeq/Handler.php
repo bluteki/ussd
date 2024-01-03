@@ -7,10 +7,8 @@ use DOMElement;
 use Bluteki\Ussd\Gateway\Handler as GatewayHandler;
 use Bluteki\Ussd\Gateway\Request as GatewayRequest;
 use Bluteki\Ussd\Gateway\TruTeq\Request as TruTeqRequest;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use SimpleXMLElement;
 
 class Handler extends GatewayHandler
 {
@@ -26,6 +24,8 @@ class Handler extends GatewayHandler
     private const HTTP_USER_AGENT = 'com.truteq.net.http.Connection';
 
     /**
+     * TruTeq ussd request.
+     * 
      * @var TruTeqRequest ussd_request
      */
     private TruTeqRequest $ussd_request;
@@ -53,20 +53,29 @@ class Handler extends GatewayHandler
 
     public function continue(string $message): Response
     {
-        return response($this->response(static::USSD_RESPONSE_OPEN_SESSION, $message));
+        return $this->response(static::USSD_RESPONSE_OPEN_SESSION, $message);
     }
 
     public function close(string $message): Response
     {
-        return response($this->response(static::USSD_RESPONSE_CLOSE_SESSION, $message));
+        return $this->response(static::USSD_RESPONSE_CLOSE_SESSION, $message);
     }
 
     public function charge(string $message, float $cost, string $reference = ''): Response
     {
-        return response($this->response(static::USSD_RESPONSE_OPEN_SESSION, $message, $cost, $reference));
+        return $this->response(static::USSD_RESPONSE_OPEN_SESSION, $message, $cost, $reference);
     }
 
-    private function response(int $type, string $msg, float $cost = 0.0, string $reference = ''): string
+    /**
+     * Response generator.
+     * 
+     * @param int type
+     * @param string msg
+     * @param float cost
+     * @param string reference
+     * @return Response
+     */
+    private function response(int $type, string $msg, float $cost = 0.0, string $reference = ''): Response
     {
         $xml = new DOMDocument('1.0', 'UTF-8');
 
@@ -76,9 +85,18 @@ class Handler extends GatewayHandler
 
         $cost <= 0 ?: $this->appendPremiumCostToUssd($xml, $ussd, $cost, $reference);
 
-        return $xml->saveXML();
+        return response($xml->saveXML());
     }
 
+    /**
+     * Append ussd request cost in XML document.
+     * 
+     * @param DOMDocument xml
+     * @param DOMElement ussd
+     * @param float cost
+     * @param string reference
+     * @return void
+     */
     private function appendPremiumCostToUssd(DOMDocument &$xml, DOMElement &$ussd, float $cost, string $reference): void
     {
         $ussd->appendChild($premium = $xml->createElement("premium"));

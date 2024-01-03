@@ -11,12 +11,14 @@ use Bluteki\Ussd\Models\SessionManager;
 class NextAction extends Action implements NextActionInterface
 {
     /**
+     * Menu class name.
+     * 
      * @var string $menu
      */
     private string $menu;
 
     /**
-     * 
+     * Construct next action class.
      * 
      * @param string $menu
      */
@@ -35,7 +37,7 @@ class NextAction extends Action implements NextActionInterface
     }
 
     /**
-     * 
+     * Add menu to menus and reset navigation tracker to 1.
      * 
      * @param Menu menu
      * @param SessionManager manager

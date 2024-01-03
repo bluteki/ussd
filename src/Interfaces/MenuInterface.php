@@ -1,24 +1,24 @@
 <?php
 
-namespace Bluteki\Ussd\Contacts;
+namespace Bluteki\Ussd\Interfaces;
 
-use Bluteki\Ussd\Interfaces\Controls\FunctionActionInterface;
-use Bluteki\Ussd\Interfaces\Controls\NextActionInterface;
-use Bluteki\Ussd\Interfaces\Controls\ResponseActionInterface;
+use Bluteki\Ussd\Controls\FunctionAction;
+use Bluteki\Ussd\Controls\NextAction;
+use Bluteki\Ussd\Controls\ResponseAction;
 
 interface MenuInterface
 {
     /**
+     * Menu entry.
      * 
-     * 
-     * @return FunctionActionInterface|NextActionInterface|ResponseActionInterface
+     * @return FunctionAction|NextAction|ResponseAction
      */
-    public function main(): FunctionActionInterface|NextActionInterface|ResponseActionInterface;
+    public function entry(): FunctionAction|NextAction|ResponseAction;
 
     /**
+     * Menu input.
      * 
-     *  
-     * @return array
+     * @return FunctionAction|NextAction|ResponseAction
      */
-    public function options(): array;
+    public function input(): FunctionAction|NextAction|ResponseAction; 
 }

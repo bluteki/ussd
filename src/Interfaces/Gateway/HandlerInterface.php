@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 interface HandlerInterface
 {
     /**
-     * 
+     * Get gateway handler.
      * 
      * @return HandlerInterface
      * @throws GatewayHandlerNotFoundException
@@ -18,7 +18,7 @@ interface HandlerInterface
     public static function getHandler(Request $request): HandlerInterface;
 
     /**
-     * 
+     * Added data into shared menus data.
      * 
      * @param string key
      * @param mixed value
@@ -27,7 +27,7 @@ interface HandlerInterface
     public function addData(string $key, $value): void;
 
     /**
-     * 
+     * Get database in shared menus data.
      * 
      * @param string key
      * @return Collection|mixed
@@ -35,7 +35,7 @@ interface HandlerInterface
     public function getData(string $key = null);
 
     /**
-     * 
+     * Removes data into shared menus data.
      * 
      * @param string key
      * @return void
@@ -43,21 +43,21 @@ interface HandlerInterface
     public function removeData(string $key): void;
 
     /**
-     * 
+     * Get ussd request for handler.
      * 
      * @return RequestInterface
      */
     public function request(): RequestInterface;
 
     /**
-     * 
+     * Get type request.
      * 
      * @return int
      */
     public function type(): int;
     
     /**
-     * 
+     * Continue response for handler.
      * 
      * @param string message
      * @return Response
@@ -65,7 +65,7 @@ interface HandlerInterface
     public function continue(string $message): Response;
 
     /**
-     * 
+     * Close response for handler.
      * 
      * @param string message
      * @return Response
@@ -73,7 +73,7 @@ interface HandlerInterface
     public function close(string $message): Response;
 
     /**
-     * 
+     * Charge response for handler.
      * 
      * @param string message
      * @param float cost
@@ -83,7 +83,7 @@ interface HandlerInterface
     public function charge(string $message, float $cost, string $reference = ""): Response;
 
     /**
-     * 
+     * Get session manager handler.
      * 
      * @return SessionManagerInterface
      */

@@ -7,7 +7,7 @@ use Bluteki\Ussd\Interfaces\Testing\Mock\HttpRequest;
 interface RequestInterface extends HttpRequest
 {
     /**
-     * 
+     * Flare request mock.
      * 
      * @return array
      */

@@ -9,17 +9,21 @@ use Bluteki\Ussd\Models\SessionManager as Model;
 class SessionManager implements SessionManagerInterface
 {
     /**
+     * Session manager.
+     * 
      * @var SessionManagerInterface $instance
      */
     private static SessionManagerInterface $instance;
 
     /**
+     * Session manager mode.
+     * 
      * @var Model session_manager
      */
     private Model $manager;
 
     /**
-     * 
+     * Construct session manager class.
      * 
      * @param HandlerInterface $handler
      */

@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
- * 
- * 
  * @property string $session_id
  * @property string $msisdn
  * @property Collection $data
@@ -61,7 +59,7 @@ class SessionManager extends Model
     }
 
     /**
-     * 
+     * Check if value is valid array.
      * 
      * @param mixed val
      * @return bool

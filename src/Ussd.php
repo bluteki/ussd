@@ -41,6 +41,13 @@ class Ussd implements UssdInterface
         return new ResponseAction($response, $next);
     }
 
+    /**
+     * USSD navigating to menus.
+     * 
+     * @param string entry_name
+     * @param HandlerInterface $handler
+     * @return Response
+     */
     protected function navigation(string $entry_menu, HandlerInterface $handler): Response
     {
         $this->incrementNavigationTracker($manager = ($handler)->session()->manager());
@@ -54,11 +61,23 @@ class Ussd implements UssdInterface
         return $response->action($handler);
     }
 
+    /**
+     * Check if request is clean up request.
+     * 
+     * @param HandlerInterface $handler
+     * @return bool
+     */
     protected function isCleanUpRequest(HandlerInterface $handler): bool
     {
         return Handler::REQUEST_TYPE_CLOSE == $handler->type();
     }
 
+    /**
+     * Clean up session manager.
+     * 
+     * @param HandlerInterface $handler
+     * @return Response
+     */
     protected function cleanUpSessionManagerResponse(HandlerInterface $handler): Response
     {
         $handler->session()->manager()->delete();
@@ -66,16 +85,37 @@ class Ussd implements UssdInterface
         return $handler->close("");
     }
     
+    /**
+     * Add one to navigation tracker.
+     * 
+     * @param SessionManager manager
+     * @return void
+     */
     protected function incrementNavigationTracker(SessionManager $manager): void
     {
         $manager->update(['navigation_tracker' => $manager->navigation_tracker + 1]);
     }
 
+    /**
+     * Add input message data into session manager model.
+     * 
+     * @param SessionManager manager
+     * @param RequestInterface request
+     * @return void
+     */
     protected function addRequestDataSessionManager(SessionManager $manager, RequestInterface $request): void
     {
         $manager->update(['data' => $manager->data->add($request->msg())]);
     }
 
+    /**
+     * Get menu current menu or uses entry_menu.
+     * 
+     * @param SessionManager manager
+     * @param HandlerInterface handler
+     * @param string entry_menu
+     * @return Menu
+     */
     protected function getMenu(SessionManager $manager, HandlerInterface &$handler, string $entry_menu): Menu
     {
         if (! empty($last_menu = $manager->menus->last())) return new $last_menu($handler);
@@ -85,11 +125,23 @@ class Ussd implements UssdInterface
         return new $entry_menu($handler);
     }
 
+    /**
+     * Check if current request is entry request.
+     * 
+     * @param SessionManager manager
+     * @return bool
+     */
     protected function is_entry_request(SessionManager $manager): bool
     {
         return $manager->navigation_tracker % 2 != 0;
     }
 
+    /**
+     * Throw exception if request not action.
+     * 
+     * @param FunctionAction|NextAction|ResponseAction response
+     * @return void
+     */
     protected function throwExceptionIfResponseNotAction($response): void
     {
         $response instanceof FunctionAction ||
@@ -97,6 +149,13 @@ class Ussd implements UssdInterface
         $response instanceof ResponseAction ?: throw new Exception();
     }
 
+    /**
+     * Call menu method base on request is entry or not.
+     * 
+     * @param Menu menu
+     * @param SessionManager
+     * @return FunctionAction|NextAction|ResponseAction
+     */
     protected function callMenuMethod(Menu $menu, SessionManager $manager): FunctionAction|NextAction|ResponseAction
     {
         $this->throwExceptionIfResponseNotAction(

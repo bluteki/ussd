@@ -8,21 +8,14 @@ use Illuminate\Http\Request;
 interface RequestInterface extends HttpRequest
 {
     /**
-     * 
+     * TruTeq XML request mock.
      * 
      * @return string
      */
     public function xml(): string;
 
     /**
-     * 
-     * 
-     * @return Request
-     */
-    public function http(): Request;
-
-    /**
-     * 
+     * TruTeq request mock with query parameter.
      * 
      * @return Request
      */

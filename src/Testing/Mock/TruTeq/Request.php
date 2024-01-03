@@ -15,25 +15,41 @@ class Request implements RequestInterface
     public const USSD_REQUEST_RATE_CHARGE_FAILED = 10;
 
     /**
+     * Request session id.
+     * 
      * @var string sessionID
      */
     private string $sessionID;
 
     /**
+     * Request msisdn.
+     * 
      * @var string msisdn
      */
     private string $msisdn;
 
     /**
+     * Request type.
+     * 
      * @var int type
      */
     private int $type;
 
     /**
+     * Request input message.
+     * 
      * @var string msg
      */
     private string $msg;
 
+    /**
+     * Construct request class.
+     * 
+     * @param string sessionID
+     * @param string msisdn
+     * @param int type
+     * @param string msg
+     */
     public function __construct(string $sessionID, string $msisdn, int $type, string $msg)
     {
         $this->sessionID = $sessionID;

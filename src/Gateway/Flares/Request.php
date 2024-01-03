@@ -3,18 +3,19 @@
 namespace Bluteki\Ussd\Gateway\Flares;
 
 use Bluteki\Ussd\Gateway\Request as GatewayRequest;
-use Bluteki\Ussd\Interfaces\Gateway\RequestInterface;
 use Illuminate\Http\Request as HttpRequest;
 
 class Request extends GatewayRequest
 {
     /**
+     * Http request.
+     * 
      * @var HttpRequest request
      */
     private HttpRequest $request;
 
     /**
-     * 
+     * Construct request.
      * 
      * @param HttpRequest request
      */

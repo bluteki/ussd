@@ -18,6 +18,8 @@ class Handler extends GatewayHandler
     private const FIELDS = ['msisdn', 'sessionid', 'type', 'msg'];
 
     /**
+     * Flares ussd request.
+     * 
      * @var FlaresRequest ussd_request
      */
     private FlaresRequest $ussd_request;
@@ -58,6 +60,16 @@ class Handler extends GatewayHandler
         return $this->response(Handler::USSD_RESPONSE_CONTINUE, $message, $cost, $reference);
     }
 
+
+    /**
+     * Response generator.
+     * 
+     * @param int type
+     * @param string msg
+     * @param float cost
+     * @param string reference
+     * @return Response
+     */
     private function response(string $type, string $message, float $cost = 0.0, string $reference = ''): Response
     {
         return response($message)->header('FreeFlow', $type)

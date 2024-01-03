@@ -3,7 +3,6 @@
 namespace Bluteki\Ussd\Gateway\TruTeq;
 
 use Bluteki\Ussd\Gateway\Request as GatewayRequest;
-use Bluteki\Ussd\Interfaces\Gateway\RequestInterface;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Collection;
 use SimpleXMLElement;
@@ -11,6 +10,8 @@ use SimpleXMLElement;
 class Request extends GatewayRequest
 {
     /**
+     * Request data.
+     * 
      * @var Collection
      */
     private Collection $request;
@@ -18,7 +19,7 @@ class Request extends GatewayRequest
     private const FIELDS = ['msisdn', 'sessionid', 'type', 'msg'];
 
     /**
-     * 
+     * Construct request.
      * 
      * @return HttpRequest request
      */

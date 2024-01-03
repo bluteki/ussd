@@ -7,15 +7,20 @@ use Bluteki\Ussd\Controls\NextAction;
 use Bluteki\Ussd\Controls\ResponseAction;
 use Bluteki\Ussd\Interfaces\Gateway\HandlerInterface;
 use Bluteki\Ussd\Interfaces\Gateway\SessionManagerInterface;
+use Bluteki\Ussd\Interfaces\MenuInterface;
 
-abstract class Menu
+abstract class Menu implements MenuInterface
 {
     /**
+     * Gateway handler.
+     * 
      * @var HandlerInterface handler
      */
     private HandlerInterface $handler;
     
     /**
+     * Construct menu class.
+     * 
      * @var HandlerInterface handler
      */
     public function __construct(HandlerInterface &$handler)
@@ -23,22 +28,12 @@ abstract class Menu
         $this->handler = $handler;
     }
 
-    /**
-     * 
-     * 
-     * @return FunctionAction|NextAction|ResponseAction
-     */
     public abstract function entry(): FunctionAction|NextAction|ResponseAction;
 
-    /**
-     * 
-     * 
-     * @return FunctionAction|NextAction|ResponseAction
-     */
     public abstract function input(): FunctionAction|NextAction|ResponseAction; 
 
     /**
-     * 
+     * Get handler.
      * 
      * @return HandlerInterface
      */
@@ -48,7 +43,7 @@ abstract class Menu
     }
 
     /**
-     * 
+     * Get session manager.
      * 
      * @return SessionManagerInterface
      */
