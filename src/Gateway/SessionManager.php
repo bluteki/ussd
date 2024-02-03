@@ -44,6 +44,25 @@ class SessionManager implements SessionManagerInterface
         return $this->manager()->data->last();
     }
 
+    public function set(string|int $key, string|int|null|array $value): bool
+    {
+        $this->manager->data[$key] = $value;
+
+        return $this->manager->save();
+    }
+
+    public function get(string|int $key): string|int|null|array
+    {
+        return $this->manager->data->get($key);
+    }
+
+    public function remove(string|int $key): bool
+    {
+        unset($this->manager->data[$key]);
+
+        return $this->manager->save();
+    } 
+
     public static function getInstance(HandlerInterface $handler): SessionManagerInterface
     {
         return isset(static::$instance) ? static::$instance : new static($handler);
@@ -56,9 +75,9 @@ class SessionManager implements SessionManagerInterface
      */
     protected function setUp(HandlerInterface $handler): void
     {
-        ($this->manager = Model::firstOrCreate([
+        $this->manager = Model::firstOrCreate([
             'session_id' => $handler->request()->sessionID(),
             'msisdn' => $handler->request()->msisdn()
-        ]));
+        ]);
     }
 }

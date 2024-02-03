@@ -23,7 +23,7 @@ class SessionManagerTest extends TestCase
             $sessionID = $this->faker->randomNumber(5),
             $msisdn = $this->faker->e164PhoneNumber(),
             1,
-            $msg = "*120*180#"
+            "*120*180#"
         ));
 
         $this->assertDatabaseHas('session_managers', [
@@ -38,7 +38,7 @@ class SessionManagerTest extends TestCase
             $sessionID = $this->faker->randomNumber(5),
             $msisdn = $this->faker->e164PhoneNumber(),
             1,
-            $msg = "*120*180#"
+            "*120*180#"
         ));
 
         $this->assertInstanceOf(Model::class, $manager = $session->manager());
@@ -60,6 +60,24 @@ class SessionManagerTest extends TestCase
         ($manager = $session->manager())->update(['data' => $manager->data->add($msg)]);
 
         $this->assertEquals($msg, $session->value());
+    }
+
+    public function test_set_get_remove_data(): void
+    {
+        $session = new SessionManager($this->get_handler(
+            $this->faker->randomNumber(5),
+            $this->faker->e164PhoneNumber(),
+            1,
+            "*120*180#"
+        ));
+
+        $session->set('referred_phone_number_1', $phoneNumber = $this->faker->e164PhoneNumber());
+
+        $this->assertEquals($phoneNumber, $session->get('referred_phone_number_1'));
+
+        $session->remove('referred_phone_number_1');
+
+        $this->assertNull($session->get('referred_phone_number_1'));
     }
 
     private function get_handler(string $sessionID, string $msisdn, int $type, string $msg): HandlerInterface

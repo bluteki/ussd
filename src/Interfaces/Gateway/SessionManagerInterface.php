@@ -21,6 +21,31 @@ interface SessionManagerInterface
     public function value(): string|int;
 
     /**
+     * Set item in data.
+     * 
+     * @param string|int $key
+     * @param string|int|null|array $value
+     * @return void
+     */
+    public function set(string|int $key, string|int|null|array $value): bool;
+
+    /**
+     * Get item in data.
+     * 
+     * @param string|int $key
+     * @return string|int|null|array $value
+     */
+    public function get(string|int $key): string|int|null|array;
+
+    /**
+     * Remove item in data.
+     * 
+     * @param string|int $key
+     * @return bool
+     */
+    public function remove(string|int $key);
+
+    /**
      * Get or Create session manager instance.
      * 
      * @param HandlerInterface $request
