@@ -20,6 +20,11 @@ class MainTest extends TestCase
             $msg_entry = "*120*180#"
         ))->http());
 
+        $this->assertDatabaseHas('session_managers', [
+            'session_id' => $sessionID,
+            'msisdn' => $msisdn
+        ]);
+
         $response_entry_data = collect((array)(new SimpleXMLElement($response_entry->getContent())));
 
         $this->assertEquals(Handler::USSD_RESPONSE_OPEN_SESSION, $response_entry_data->get('type'));
@@ -31,16 +36,16 @@ class MainTest extends TestCase
             Request::USSD_REQUEST_EXISTING_SESSION,
             $msg_input = $this->faker->words(10, true)
         ))->http());
+        
+        $this->assertDatabaseMissing('session_managers', [
+            'session_id' => $sessionID,
+            'msisdn' => $msisdn
+        ]);
 
         $response_input_data = collect((array)(new SimpleXMLElement($response_input->getContent())));
 
         $this->assertEquals(Handler::USSD_RESPONSE_CLOSE_SESSION, $response_input_data->get('type'));
         $this->assertEquals($msg_input, $response_input_data->get('msg'));
-
-        $this->assertDatabaseHas('session_managers', [
-            'session_id' => $sessionID,
-            'msisdn' => $msisdn
-        ]);
 
         $response_input = (new Ussd)->execute(ResponseActionDemo::class, (new Request(
             $sessionID,
@@ -48,11 +53,6 @@ class MainTest extends TestCase
             Request::USSD_REQUEST_SESSION_CANCELLED,
             ""
         ))->http());
-        
-        $this->assertDatabaseMissing('session_managers', [
-            'session_id' => $sessionID,
-            'msisdn' => $msisdn
-        ]);
     }
 
 }

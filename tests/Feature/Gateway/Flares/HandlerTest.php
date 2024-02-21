@@ -4,6 +4,7 @@ namespace Bluteki\Ussd\Tests\Future\Gateway\Flares;
 
 use Bluteki\Ussd\Gateway\Flares\Handler;
 use Bluteki\Ussd\Gateway\Flares\Request as FlaresRequest;
+use Bluteki\Ussd\Models\SessionManager;
 use Bluteki\Ussd\Testing\Mock\Flares\Request as RequestMock;
 use Bluteki\Ussd\Tests\TestCase;
 use Illuminate\Http\Request;
@@ -53,13 +54,18 @@ class HandlerTest extends TestCase
 
     public function test_close(): void
     {
+        SessionManager::insert([
+            'session_id' => $sessionID = $this->faker->randomNumber(5),
+            'msisdn' => $msisdn = $this->faker->e164PhoneNumber(),
+        ]);
+
         $handler = new Handler((new RequestMock(
-            $this->faker->randomNumber(5),
-            $this->faker->e164PhoneNumber(),
+            $sessionID,
+            $msisdn,
             Handler::USSD_REQUEST_NEW_REQUEST,
             "120*180"
         ))->http());
-
+        
         $response = $handler->close($msg = $this->faker->words(5, true));
         
         $this->assertEquals($msg, $response->getContent());
@@ -68,6 +74,11 @@ class HandlerTest extends TestCase
         $this->assertEquals('', $response->headers->get("CpRefId"));
         $this->assertEquals(0, $response->headers->get("Amount"));
         $this->assertEquals('UTF-8', $response->headers->get("Content-Type"));
+
+        $this->assertDatabaseMissing('session_managers', [
+            'session_id' => $sessionID,
+            'msisdn' => $msisdn,
+        ]);
     }
 
     public function test_charge(): void

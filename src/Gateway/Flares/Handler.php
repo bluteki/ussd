@@ -52,6 +52,8 @@ class Handler extends GatewayHandler
 
     public function close(string $message): Response
     {
+        $this->session()->manager()->delete();
+
         return $this->response(Handler::USSD_RESPONSE_BREAK, $message);
     }
 

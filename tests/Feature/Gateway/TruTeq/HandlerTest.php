@@ -2,7 +2,9 @@
 
 namespace Bluteki\Ussd\Tests\Future\Gateway\TruTeq;
 
+use Bluteki\Ussd\Gateway\SessionManager;
 use Bluteki\Ussd\Gateway\TruTeq\Handler;
+use Bluteki\Ussd\Models\SessionManager as ModelsSessionManager;
 use Bluteki\Ussd\Testing\Mock\TruTeq\Request as RequestMock;
 use Bluteki\Ussd\Tests\TestCase;
 use Illuminate\Http\Request;
@@ -56,19 +58,28 @@ class HandlerTest extends TestCase
 
     public function test_close(): void
     {
+        ModelsSessionManager::insert([
+            'session_id' => $sessionID = $this->faker->randomNumber(5),
+            'msisdn' => $msisdn = $this->faker->e164PhoneNumber(),
+        ]);
+
         $handler = new Handler((new RequestMock(
-            (string) $this->faker->randomNumber(5),
-            $this->faker->e164PhoneNumber(),
+            $sessionID,
+            $msisdn,
             1,
             "*120*180#"
         ))->http());
-
         $data = collect(
             (array)(new SimpleXMLElement($handler->close($msg = $this->faker->words(4, true))->getContent()))
         );
 
         $this->assertEquals(Handler::USSD_RESPONSE_CLOSE_SESSION, $data->get("type"));     
-        $this->assertEquals($msg, $data->get("msg")); 
+        $this->assertEquals($msg, $data->get("msg"));
+
+        $this->assertDatabaseMissing('session_managers', [
+            'session_id' => $sessionID,
+            'msisdn' => $msisdn,
+        ]);
     }
 
     public function test_charge(): void
